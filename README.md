@@ -1,7 +1,7 @@
 Tarefas para o projeto final.
 
 * Clone este repositório para usar como base para o seu projeto.
-$ git clone https://github.com/diogojpina/projeto-final-verao-ime-usp-2019.git
+* $ git clone https://github.com/diogojpina/projeto-final-verao-ime-usp-2019.git
 
 Entra na pasta do projeto e executa os comando
 * $ git remote remove origin
@@ -9,10 +9,10 @@ Entra na pasta do projeto e executa os comando
 * $ git push -u origin master
 
 Baixa as bibliotecas usando o comando:
-$ composer install
+* $ composer install
 
 Iniciailize o servidor do Symfony usando o comando
-$ php bin/console server:run
+* $ php bin/console server:run
 
 As tarefas que precisam ser feitas são:
 
