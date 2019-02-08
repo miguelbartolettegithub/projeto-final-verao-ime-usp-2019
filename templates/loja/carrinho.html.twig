@@ -1,0 +1,38 @@
+<h2>Carrinho de Compras</h2>
+
+
+
+<table border="1" width="100%">
+	<thead>
+	<tr>
+		<th>Imagem</th>
+		<th>Nome do Produto</th>
+		<th>Quantidade</th>
+		<th>Preço</th>
+		<th>Total</th>		
+	</tr>
+	<thead>
+	<tbody>
+	{% for item in carrinho %}
+	<tr>
+		<td><img src="/images/{{ item.produto.imagem }}" width="50"></td>
+		<td>{{ item.produto.nome }}</td>
+		<td>
+<form action="/loja/carrinho/{{ item.produto.id }}/alterar" method="post">
+<input type="text" name="quantidade" value="{{ item.quantidade }}">
+<input type="submit" value="Alterar">
+</form>
+		</td>
+		<td>R$ {{ item.produto.preco }}</td>
+		<td>R$ {{ item.total }}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+O total da sua compra é: R$ {{ total }}
+
+<br /><br />
+<a href="/loja/finalizar">
+<input type="button" value="Finalizar Pedido" />
+</a>

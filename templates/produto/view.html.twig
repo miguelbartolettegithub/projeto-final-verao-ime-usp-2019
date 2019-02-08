@@ -1,0 +1,12 @@
+<h2>{{ produto.nome }}</h2>
+<img src="/images/{{ produto.imagem }}" width="500">
+<br />
+{{ produto.descricao }}
+<br /><br />
+
+R$ {{ produto.preco }}
+<br />
+<a href="/carrinho/{{ produto.id }}">
+<input type="button" value="Comprar">
+</a>
+

@@ -1,0 +1,13 @@
+<h3>Parabéns {{ cliente.nome}}!</h3>
+
+<br />
+Você acabou de comprar:
+<br />
+{% for item in carrinho %}
+<b>{{ item.produto.nome }}</b> ({{ item.quantidade }}) por R$ {{ item.produto.preco}} - Total R$ {{ item.total }}
+<br />
+{% endfor %}
+Total: {{ total }}
+
+<br /><br />
+Em breve, enviaremos um e-mail para {{ cliente.email }} com os detalhes da entrega!

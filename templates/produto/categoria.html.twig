@@ -1,0 +1,18 @@
+<h2>Título da Categoria</h2>
+
+{% for produto in produtos %}
+
+<h3>{{ produto.nome }}</h3>
+<img src="/images/{{ produto.imagem }}" width="300">
+<br />
+{{ produto.descricao }}
+<br /><br />
+
+R$ {{ produto.preco }}
+<br />
+<a href="/produto/{{ produto.id }}">Ver Detalhes</a>
+
+{% endfor %}
+
+
+
