@@ -35,7 +35,7 @@
 		</li>
 	      </ul>
 	      <form method="post" action="/busca" class="form-inline mt-2 mt-md-0">
-		<input class="form-control mr-sm-2" type="text" placeholder="Buscar produto" aria-label="Buscar">
+		<input name="buscado" class="form-control mr-sm-2" type="text" placeholder="Buscar produto" aria-label="Buscar">
 		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 	      </form>
 	    </div>
@@ -50,6 +50,12 @@
 	<main role="main">
 
 	<div class="container">
+            
+            {#
+            <pre>
+            {{ dump() }}
+            </pre>
+            #}
 
 	<h2>Produtos em Destaque<h2>
 
@@ -60,6 +66,9 @@
 
 	<img src="/images/{{ produto.imagem }}" width="200">
 	<br />
+        
+        <a href="/produto/{{ produto.id }}">Ver Detalhes</a>
+        <br />
 
 	{% endfor %}
 

@@ -36,12 +36,26 @@ class ProdutoController extends AbstractController {
 	/**
 	* @Route("/busca")
 	*/
-	public function buscar() {
-		return $this->render('produto/buscar.html.twig', [
-					    
+	public function buscar(Request $request) {
+            $buscado = $request->request->get('buscado', '');
+            $erros = array();
+            $encontrado = array();
+            
+            if (!$buscado) {
+                $erros[] = 'Por favor, digite algo para buscar.';
+                $encontrado[] = ' ';
+            }
+            
+            if (count($erros) == 0) {
+                $banco = new Banco();
+                $encontrado = $banco->buscarProdutos($buscado);
+            }
+            
+            return $this->render('produto/buscar.html.twig', [
+                        'erros' => $erros,
+                        'buscado' => $buscado,
+                        'encontrado' => $encontrado
 		]);
 	}
-
-
 	
 }

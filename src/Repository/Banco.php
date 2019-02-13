@@ -8,7 +8,7 @@ class Banco {
 	private function conectaBD() {
 		$host = 'localhost';
 		$user = 'root';
-		$pass = 'senha';
+		$pass = '';
 		$base = 'verao-2019';
 		$banco = new \mysqli($host, $user, $pass, $base);
 		if (\mysqli_connect_errno()) {
@@ -114,5 +114,24 @@ class Banco {
 
 		return $cliente;
 	}
+        
+        public function buscarProdutos ($buscado) {
+            $strsql = "SELECT * FROM produtos WHERE nome OR descricao LIKE '%" . $buscado . "%'";
+            
+            $resultados = $this->getResultsBD($strsql);
+            
+            if($resultados->num_rows > 0) {
+                $encontrado = array();
+                $encontrado[0] = " ";
+                while ($linha = $resultados->fetch_object()) {
+                    $encontrado[] = $this->fetchProduto($linha);
+                }
+            } else {
+                $encontrado = array();
+                $encontrado[0] = 'Lamentamos, mas nenhum produto foi encontrado. Por favor, tente novamente no futuro.';
+            }
+            
+            return $encontrado;
+        }
 
 }

@@ -112,4 +112,25 @@ class LojaController extends AbstractController {
 		
 		return $this->redirectToRoute('app_loja_carrinho');
 	}
+        
+        /**
+	* @Route("/carrinho/{id}/alterar")
+	*/
+	public function carrinhoAlterar(SessionInterface $session, Request $request) {
+		$carrinho = $session->get('carrinho');
+		$total = $session->get('carrinho_total');
+                $novaQuantidade = $request->request->get('quantidade');
+                
+                
+                
+		if (!is_array($carrinho)) {
+			$carrinho = array();
+		}
+
+
+		return $this->render('loja/carrinho.html.twig', [
+			'carrinho' => $carrinho,
+			'total' => $total	    
+		]);
+	}
 }
