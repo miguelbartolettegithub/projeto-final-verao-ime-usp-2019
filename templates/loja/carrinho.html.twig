@@ -74,7 +74,7 @@
 		<td>{{ item.produto.nome }}</td>
                 
 		<td>
-                <form action="/loja/carrinho/{{ item.produto.id }}/alterar" method="post">
+                <form action="/carrinho/alterar/{{ item.produto.id }}" method="post">
                 <input type="text" name="quantidade" value="{{ item.quantidade }}">
                 <input type="submit" value="Alterar">
                 </form>

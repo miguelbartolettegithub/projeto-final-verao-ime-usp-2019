@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller;
 
-
 use App\Repository\Banco;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -114,23 +113,26 @@ class LojaController extends AbstractController {
 	}
         
         /**
-	* @Route("/carrinho/{id}/alterar")
+	* @Route("/carrinho/alterar/{id}")
 	*/
-	public function carrinhoAlterar(SessionInterface $session, Request $request) {
-		$carrinho = $session->get('carrinho');
-		$total = $session->get('carrinho_total');
-                $novaQuantidade = $request->request->get('quantidade');
+	public function carrinhoAlterar(SessionInterface $session, Request $request, $id) {
+                $banco = new Banco();
+                $produto = $banco->getProduto($id);
+                $carrinho = $session->get('carrinho');
+		$novaQuantidade = $request->request->get('quantidade');
+                                
+                $totalItem = (int)$novaQuantidade * $produto->getPreco();
+                $carrinho[$produto->getId()]['quantidade'] = (int)$novaQuantidade;
+                $carrinho[$produto->getId()]['total'] = $totalItem;
                 
+                $session->set('carrinho', $carrinho);
                 
-                
-		if (!is_array($carrinho)) {
-			$carrinho = array();
+                $total = 0;
+		foreach ($carrinho as $item2) {
+			$total += $item2['total'];
 		}
-
-
-		return $this->render('loja/carrinho.html.twig', [
-			'carrinho' => $carrinho,
-			'total' => $total	    
-		]);
+		$session->set('carrinho_total', $total);
+		
+		return $this->redirectToRoute('app_loja_carrinho');
 	}
 }
