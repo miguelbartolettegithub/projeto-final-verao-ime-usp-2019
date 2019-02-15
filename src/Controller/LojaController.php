@@ -116,14 +116,23 @@ class LojaController extends AbstractController {
 	* @Route("/carrinho/alterar/{id}")
 	*/
 	public function carrinhoAlterar(SessionInterface $session, Request $request, $id) {
+                //implementar validações de estoque
+                //implementar qtde = 0 ==> remove do carrinho (OK em 15/02/2019)
                 $banco = new Banco();
                 $produto = $banco->getProduto($id);
                 $carrinho = $session->get('carrinho');
 		$novaQuantidade = $request->request->get('quantidade');
-                                
-                $totalItem = (int)$novaQuantidade * $produto->getPreco();
-                $carrinho[$produto->getId()]['quantidade'] = (int)$novaQuantidade;
-                $carrinho[$produto->getId()]['total'] = $totalItem;
+                
+                if ((int) $novaQuantidade == 0) {
+                    unset($carrinho[$produto->getId()]['produto']);
+                    unset($carrinho[$produto->getId()]['quantidade']);
+                    unset($carrinho[$produto->getId()]['total']);
+                    unset($carrinho[$produto->getId()]);
+                } else {
+                    $totalItem = (int)$novaQuantidade * $produto->getPreco();
+                    $carrinho[$produto->getId()]['quantidade'] = (int)$novaQuantidade;
+                    $carrinho[$produto->getId()]['total'] = $totalItem;
+                }
                 
                 $session->set('carrinho', $carrinho);
                 
