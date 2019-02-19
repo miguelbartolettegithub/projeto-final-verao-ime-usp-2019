@@ -120,14 +120,14 @@ class Banco {
             
             $resultados = $this->getResultsBD($strsql);
             
+            $encontrado = array();
+            
             if($resultados->num_rows > 0) {
-                $encontrado = array();
                 $encontrado[0] = " ";
                 while ($linha = $resultados->fetch_object()) {
                     $encontrado[] = $this->fetchProduto($linha);
                 }
             } else {
-                $encontrado = array();
                 $encontrado[0] = 'Lamentamos, mas nenhum produto foi encontrado. Por favor, tente novamente no futuro.';
             }
             

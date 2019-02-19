@@ -70,6 +70,7 @@ class LojaController extends AbstractController {
 	public function carrinho(SessionInterface $session) {
 		$carrinho = $session->get('carrinho');
 		$total = $session->get('carrinho_total');
+                $erros = $session->get('erros');
 		if (!is_array($carrinho)) {
 			$carrinho = array();
 		}
@@ -77,7 +78,8 @@ class LojaController extends AbstractController {
 
 		return $this->render('loja/carrinho.html.twig', [
 			'carrinho' => $carrinho,
-			'total' => $total	    
+			'total' => $total,
+                        'erros' => $erros
 		]);
 	}
 
@@ -116,25 +118,43 @@ class LojaController extends AbstractController {
 	* @Route("/carrinho/alterar/{id}")
 	*/
 	public function carrinhoAlterar(SessionInterface $session, Request $request, $id) {
-                //implementar validações de estoque
+                //implementar validação de quatidade negativa (OK em 19/02/2019)
+                //implementar validações de estoque (OK em 19/02/2019)
                 //implementar qtde = 0 ==> remove do carrinho (OK em 15/02/2019)
                 $banco = new Banco();
                 $produto = $banco->getProduto($id);
                 $carrinho = $session->get('carrinho');
 		$novaQuantidade = $request->request->get('quantidade');
+                $erros = array();
                 
-                if ((int) $novaQuantidade == 0) {
+                if ((int) $novaQuantidade < 0) {
+                    $erros[] = 'Por favor, digite um número maior ou igual a zero.';
+                } else if ((int) $novaQuantidade == 0) {
                     unset($carrinho[$produto->getId()]['produto']);
                     unset($carrinho[$produto->getId()]['quantidade']);
                     unset($carrinho[$produto->getId()]['total']);
+                    /*
+                    Em 15/02/19, resolvi transformar o trecho acima em um foreach
+                    A alteração funcionou, mas não entendi:
+                    a) Como o foreach não percorria todo o vetor $carrinho
+                    (inclusive demais produtos além do que se desejava excluir).
+                    b) Como ele poderia apagar exatamente o produto que se desejava excluir.
+                    foreach($carrinho as $chave => $valor) {
+                        unset($carrinho[$chave]['$valor']);
+                    }
+                    */
                     unset($carrinho[$produto->getId()]);
-                } else {
+                    
+                } else if ((int) $novaQuantidade > 0 && (int) $novaQuantidade <= $produto->getEstoque()) {
                     $totalItem = (int)$novaQuantidade * $produto->getPreco();
                     $carrinho[$produto->getId()]['quantidade'] = (int)$novaQuantidade;
                     $carrinho[$produto->getId()]['total'] = $totalItem;
+                } else if ((int) $novaQuantidade >= $produto->getEstoque()) {
+                    $erros[] = "Lamentamos, mas dispomos de apenas " . $produto->getEstoque() . " unidades em nosso estoque.";
                 }
                 
                 $session->set('carrinho', $carrinho);
+                $session->set('erros', $erros);
                 
                 $total = 0;
 		foreach ($carrinho as $item2) {

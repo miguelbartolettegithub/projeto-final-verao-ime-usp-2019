@@ -51,11 +51,18 @@
 
 <div class="container">
 
+{#
 <pre>
 {{ dump() }}
 </pre>
+#}
 
 <h2>Carrinho de Compras</h2>
+
+{% for erro in erros %}
+    <p style="color:red">{{ erro }}</p>
+    <br />
+{% endfor %}
 
 <table border="1" width="100%">
 	<thead>
