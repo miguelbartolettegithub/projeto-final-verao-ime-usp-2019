@@ -115,6 +115,24 @@ class Banco {
 		return $cliente;
 	}
         
+        public function CadastrarCliente ($strsql) {
+            $banco = $this->conectaBD();
+            
+            $statement = $banco->prepare($strsql);
+            if (!$statement) {
+		exit($banco->error);
+            }
+            if (!$statement->execute()) {
+		exit($banco->error);
+            }
+            /*
+            Parece que esta linha:
+            $banco->execute();
+            1) está errada, e deveria ser $statement->execute();
+            2) é desnecessária, pois a execução já ocorre no 2º if.            
+            */
+        }
+        
         public function buscarProdutos ($buscado) {
             $strsql = "SELECT * FROM produtos WHERE nome OR descricao LIKE '%" . $buscado . "%'";
             

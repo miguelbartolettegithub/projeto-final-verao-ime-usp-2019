@@ -50,9 +50,15 @@
 
 <h1>Cadastro de Cliente</h1>
 
+<pre>
+{{ dump() }}
+</pre>
+
 {% for erro in erros %}
-{{ erro }} <br />
+    <p style="color:red">{{ erro }}</p>
 {% endfor %}
+
+<br />
 
 <form method="post">
 Nome: 
